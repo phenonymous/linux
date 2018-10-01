@@ -1,0 +1,181 @@
+#!/usr/bin/env zsh
+
+################################################
+# * Set correct colors
+# *
+################################################
+if [ -e /usr/share/terminfo/x/xterm-256color ]; then
+        export TERM='xterm-256color'
+else
+        export TERM='xterm-color'
+fi
+
+################################################
+# * Set default editor and visual
+# *
+################################################
+	# export EDITOR='subl'
+	# export VISUAL='subl'
+
+################################################
+# * Load Nerd Fonts symbolfunctions
+# * https://github.com/ryanoasis/nerd-fonts/tree/master/bin/scripts/lib
+# * 
+################################################
+if [[ -d $HOME/.local/share/fonts/nerdfontssymbols ]]; then
+  source $HOME/.local/share/fonts/nerdfontssymbols/*.sh
+fi
+
+
+################################################
+# * Load antigen
+# * https://github.com/zsh-users/antigen
+# * 
+################################################
+if [[ -r $HOME/.antigen/antigen.zsh ]]; then
+  
+  source $HOME/.antigen/antigen.zsh
+  
+  antigen use oh-my-zsh
+  
+  antigen bundle git
+  antigen bundle git-extras
+  # antigen bundle git-flow
+  # antigen bundle git-flow-avh
+  # antigen bundle git-hubflow
+  # antigen bundle git-remote-branch
+  # antigen bundle github
+  # antigen bundle gitignore
+
+  antigen apply
+fi
+
+setopt prompt_subst
+
+autoload -Uz vcs_info
+
+(( $+functions[defined] )) || function defined() {
+  [[ ! -z "${(tP)1}" ]]
+}
+
+(( $+functions[+vi-start-up] )) || function +vi-start-up() {
+  if [[ -n $FORCE_RUN_VCS_INFO ]]; then
+    FORCE_RUN_VCS_INFO=
+    return
+  fi
+  typeset -l enabled partial
+  enabled=$(command git config --get p-vcs.enabled)
+  [[ ${enabled} == false ]] && ret=2
+  defined partial || partial=$(command git config --get p-vcs.partial)
+  if [[ ${partial} == true ]]; then
+    zstyle ':vcs_info:*+pre-get-data:*' hooks pre-get-data
+  else
+    zstyle ':vcs_info:*+pre-get-data:*' hooks
+  fi
+}
+
+(( $+functions[+vi-pre-get-data] )) || function +vi-pre-get-data() {
+    # Only Git and Mercurial support and need caching. Abort if any other
+    # VCS is used.
+    [[ "$vcs" != git && "$vcs" != hg ]] && return
+
+    # If the shell just started up or we changed directories (or for other
+    # custom reasons) we must run vcs_info.
+    if [[ -n $FORCE_RUN_VCS_INFO ]]; then
+        FORCE_RUN_VCS_INFO=
+        return
+    fi
+
+    # If we got to this point, running vcs_info was not forced, so now we
+    # default to not running it and selectively choose when we want to run
+    # it (ret=0 means run it, ret=1 means don't).
+    ret=1
+    # If a git/hg command was run then run vcs_info as the status might
+    # need to be updated.
+    case "$(fc -ln $(($HISTCMD-1)))" in
+        git*)
+            ret=0
+            ;;
+        hg*)
+            ret=0
+            ;;
+    esac
+}
+
+(( $+function[+vi-git-branchformat] )) || function +vi-git-branchformat () {
+  : ${omg_rebase_tracking_branch_symbol:=''}
+  : ${omg_merge_tracking_branch_symbol:=''}
+  : ${omg_detached_symbol:=''}
+  : ${omg_not_tracked_branch_symbol:=''}
+
+  local upstream current_branch will_rebase type_of_upstream branch
+  current_branch=$(command git symbolic-ref --short HEAD 2>/dev/null)
+  if [[ $current_branch == 'HEAD' ]]; then
+    local current_commit_hash=$(command git rev-parse HEAD 2> /dev/null)
+    branch="$omg_detached_symbol (${current_commit_hash:0:7})"
+  else
+    upstream=$(command git rev-parse --symbolic-full-name --abbrev-ref @{upstream} 2> /dev/null)
+    if [[ -n "${upstream}" && "${upstream}" != "@{upstream}" ]]; then
+      will_rebase=$(command git config --get branch.${current_branch}.rebase 2> /dev/null)
+      if [[ $will_rebase == true ]]; then
+          type_of_upstream=$omg_rebase_tracking_branch_symbol
+      else
+          type_of_upstream=$omg_merge_tracking_branch_symbol
+      fi
+    else
+      type_of_upstream=${omg_not_tracked_branch_symbol}
+    fi
+    branch="(${current_branch} ${type_of_upstream} ${upstream//\/$current_branch/})"
+  fi
+
+  hook_com[branch]=$branch
+}
+
+(( $+function[+vi-git-status] )) || function +vi-git-status() {
+  : ${VCS_INCOMING_CHANGES_ICON:=''}
+  : ${VCS_OUTGOING_CHANGES_ICON:=''}
+  : ${VCS_DIVERGED_BRANCH_ICON:=''} 
+  : ${VCS_STATUS_INDICATOR_ICON:=' '} # Whitespace
+  local ahead behind aheadbehind current_branch
+  local -a gitstatus
+
+  current_branch=$(command git symbolic-ref --short HEAD 2>/dev/null)
+  
+  behind=$(command git rev-list HEAD.."${current_branch}"@{upstream} 2>/dev/null | wc -l)
+  {(( $behind )) && gitstatus+=( "-${behind}" ) && aheadbehind+="1";} || {gitstatus+=( "--" ) && aheadbehind+="0";}
+  
+  ahead=$(command git rev-list "${current_branch}"@{upstream}..HEAD 2>/dev/null | wc -l)
+  {(( $ahead )) && gitstatus+=( "+${ahead}" ) && aheadbehind+="1";} || {gitstatus+=( "--" ) && aheadbehind+="0";}
+
+  case "$aheadbehind" in
+    00 )
+      # If we're neither ahead or behind don't print out any info
+      return
+    ;;
+    01 )
+      VCS_STATUS_INDICATOR_ICON=$VCS_OUTGOING_CHANGES_ICON
+    ;;
+    10 )
+      VCS_STATUS_INDICATOR_ICON=$VCS_INCOMING_CHANGES_ICON
+    ;;
+    11 )
+      VCS_STATUS_INDICATOR_ICON=$VCS_DIVERGED_BRANCH_ICON
+    ;;
+  esac
+
+  hook_com[misc]+=${${(j:/:)gitstatus}/\//" $VCS_STATUS_INDICATOR_ICON "}
+}
+
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:git*' formats "%{$fg[grey]%}%s %{$reset_color%}%r/%S%{$fg[grey]%} %{$fg[blue]%}%b%{$reset_color%}%m%u%c%{$reset_color%} "
+zstyle ':vcs_info:git*' actionformats "%s  %r/%S %b %m%u%c "
+#zstyle ':vcs_info:*+*:*' debug true
+zstyle ':vcs_info:*+start-up:*' hooks start-up
+zstyle ':vcs_info:git*+set-message:*' hooks git-branchformat git-status
+
+precmd () { vcs_info }
+chpwd() { FORCE_RUN_VCS_INFO=1 }
+
+PS1='%F{5}[%F{2}%n%F{5}] %F{3}%3~ ${vcs_info_msg_0_}%f%# '
+
+alias ping="ping -c 5"

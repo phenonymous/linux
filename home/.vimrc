@@ -1,10 +1,9 @@
-execute pathogen#infect()
-call pathogen#helptags()
 set nocompatible
 filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+
 call vundle#begin()
 
-Plugin 'tpope/vim-pathogen'
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdtree-git-plugin'
