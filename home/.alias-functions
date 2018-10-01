@@ -8,6 +8,7 @@ function __llxc_usage() {
   echo
   echo '-c, --container   Container to login to'
   echo '-u, --user        User to login with'
+  echo '-h, --help        Print this help'
 }
 
 (( $+functions[llxc] )) || function llxc() {
