@@ -4,7 +4,7 @@
 # * Set correct colors
 # *
 ################################################
-if [ -e /usr/share/terminfo/x/xterm-256color ]; then
+if $(locate x/xterm-256color | grep -v snap &> /dev/null); then
         export TERM='xterm-256color'
 else
         export TERM='xterm-color'
