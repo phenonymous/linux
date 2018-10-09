@@ -1,0 +1,1 @@
+# ps -h -o comm -p $(ps -h -o ppid -p $$) # print current terminal emulator in use
