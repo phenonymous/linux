@@ -1,1 +1,2 @@
 # ps -h -o comm -p $(ps -h -o ppid -p $$) # print current terminal emulator in use
+# find / -iname "file" 2> >(grep -v 'Permission denied') >&1 # Locate file in every directory and filter out Permission denied entries. Much safer than 2> /dev/null
