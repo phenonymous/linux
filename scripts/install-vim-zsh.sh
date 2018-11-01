@@ -4,8 +4,6 @@
 # --  ==========================
 set -euo pipefail
 
-<<<<<<< HEAD
-=======
 # -- [ Set script colors ]
 # --  ===================
 # -- * If terminal capabilities has support for less than 256 colors
@@ -21,9 +19,8 @@ if (( $(echotc Co) < 256 )); then
   MAGENTA=$(tput setaf 1)
   CYAN=$(tput setaf 1)
 else
-  
+  echo
 fi
->>>>>>> 3bbc851bcdb41c4cfe250631dddb74917b17af1f
 
 zshrc[0]="   ███████╗███████╗██╗  ██╗██████╗  ██████╗"
 zshrc[1]="   ╚══███╔╝██╔════╝██║  ██║██╔══██╗██╔════╝"
