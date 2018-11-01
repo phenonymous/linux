@@ -70,3 +70,10 @@ draw_text() {
   tput cnorm
   clear
 }
+
+
+################### [ colors ]
+# * 
+# * Load default colors
+# *
+# ==============================================| 
