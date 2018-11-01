@@ -1,8 +1,29 @@
 #!/usr/bin/env bash
 
+# -- [ Handle errors gracefully ]
+# --  ==========================
 set -euo pipefail
 
-DEFAULT=$(tput sgr0)
+<<<<<<< HEAD
+=======
+# -- [ Set script colors ]
+# --  ===================
+# -- * If terminal capabilities has support for less than 256 colors
+# -- * use basic colors otherwise 256 colors
+
+DEFAULT=$(tput sgr0) # Reset all attributes
+
+if (( $(echotc Co) < 256 )); then
+  RED=$(tput setaf 1)
+  GREEN=$(tput setaf 1)
+  YELLOW=$(tput setaf 1)
+  BLUE=$(tput setaf 1)
+  MAGENTA=$(tput setaf 1)
+  CYAN=$(tput setaf 1)
+else
+  
+fi
+>>>>>>> 3bbc851bcdb41c4cfe250631dddb74917b17af1f
 
 zshrc[0]="   ███████╗███████╗██╗  ██╗██████╗  ██████╗"
 zshrc[1]="   ╚══███╔╝██╔════╝██║  ██║██╔══██╗██╔════╝"
