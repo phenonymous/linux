@@ -1,0 +1,21 @@
+[docks/dock1]
+position='left'
+icon-size=32
+auto-pinning=true
+pressure-reveal=false
+show-dock-item=false
+items-alignment='center'
+theme='Transparent'
+zoom-percent=150
+monitor=''
+lock-items=false
+dock-items=['org.gnome.Software.dockitem', 'org.xfce.Catfish.dockitem', 'google-chrome.dockitem', 'com.gexperts.Tilix.dockitem', 'sublime_text.dockitem', 'gitkraken.dockitem', 'sublime_merge.dockitem']
+tooltips-enabled=true
+unhide-delay=0
+current-workspace-only=false
+alignment='center'
+hide-delay=500
+hide-mode='window-dodge'
+zoom-enabled=true
+pinned-only=false
+offset=0
