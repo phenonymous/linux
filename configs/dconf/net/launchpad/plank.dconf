@@ -1,4 +1,4 @@
-[docks/dock1]
+[docks/phenair]
 position='left'
 icon-size=32
 auto-pinning=true
@@ -9,7 +9,7 @@ theme='Transparent'
 zoom-percent=150
 monitor=''
 lock-items=false
-dock-items=['org.gnome.Software.dockitem', 'org.xfce.Catfish.dockitem', 'google-chrome.dockitem', 'com.gexperts.Tilix.dockitem', 'sublime_text.dockitem', 'gitkraken.dockitem', 'sublime_merge.dockitem']
+dock-items=['org.gnome.Software.dockitem', 'org.xfce.Catfish.dockitem', 'nemo.dockitem', 'google-chrome.dockitem', 'com.gexperts.Tilix.dockitem', 'sublime_text.dockitem', 'gitkraken.dockitem', 'sublime_merge.dockitem']
 tooltips-enabled=true
 unhide-delay=0
 current-workspace-only=false
