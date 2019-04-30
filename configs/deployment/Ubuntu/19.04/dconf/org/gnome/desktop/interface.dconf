@@ -1,0 +1,51 @@
+[a11y/applications]
+screen-keyboard-enabled=true
+
+[a11y]
+always-show-universal-access-status=true
+
+[app-folders/folders/YaST]
+translate=true
+categories=['X-SuSE-YaST']
+name='suse-yast.directory'
+
+[app-folders/folders/Utilities]
+translate=true
+categories=['X-GNOME-Utilities']
+name='X-GNOME-Utilities.directory'
+apps=['org.gnome.baobab.desktop', 'deja-dup-preferences.desktop', 'eog.desktop', 'evince.desktop', 'org.gnome.FileRoller.desktop', 'gnome-calculator.desktop', 'gnome-dictionary.desktop', 'org.gnome.Characters.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.font-viewer.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Screenshot.desktop', 'gnome-system-log.desktop', 'gnome-system-monitor.desktop', 'gnome-tweak-tool.desktop', 'gucharmap.desktop', 'seahorse.desktop', 'vinagre.desktop', 'yelp.desktop']
+
+[app-folders/folders/Sundry]
+translate=true
+categories=['X-GNOME-Sundry']
+name='X-GNOME-Sundry.directory'
+apps=['alacarte.desktop', 'authconfig.desktop', 'ca.desrt.dconf-editor.desktop', 'fedora-release-notes.desktop', 'firewall-config.desktop', 'flash-player-properties.desktop', 'gconf-editor.desktop', 'gnome-abrt.desktop', 'gnome-power-statistics.desktop', 'ibus-setup-anthy.desktop', 'ibus-setup.desktop', 'ibus-setup-hangul.desktop', 'ibus-setup-libbopomofo.desktop', 'ibus-setup-libpinyin.desktop', 'ibus-setup-m17n.desktop', 'ibus-setup-typing-booster.desktop', 'im-chooser.desktop', 'itweb-settings.desktop', 'jhbuild.desktop', 'javaws.desktop', 'java-1.7.0-openjdk-jconsole.desktop', 'java-1.7.0-openjdk-policytool.desktop', 'log4j-chainsaw.desktop', 'log4j-logfactor5.desktop', 'nm-connection-editor.desktop', 'orca.desktop', 'setroubleshoot.desktop', 'system-config-date.desktop', 'system-config-firewall.desktop', 'system-config-keyboard.desktop', 'system-config-language.desktop', 'system-config-printer.desktop', 'system-config-users.desktop', 'vino-preferences.desktop']
+
+[app-folders]
+folder-children=['Utilities', 'Sundry', 'YaST']
+
+[input-sources]
+current=uint32 0
+sources=[('xkb', 'se')]
+
+[interface]
+show-battery-percentage=true
+gtk-theme='Ant'
+font-name='Noto Sans 11'
+cursor-theme='Breeze_Snow'
+gtk-im-module='ibus'
+toolkit-accessibility=true
+monospace-font-name='Hack Nerd Font 11'
+document-font-name='Noto Sans 11'
+icon-theme='Paper'
+
+[session]
+idle-delay=uint32 300
+
+[wm/keybindings]
+switch-to-workspace-left=['']
+switch-to-workspace-right=['']
+show-desktop=['']
+
+[wm/preferences]
+button-layout='appmenu:minimize,maximize,close'
