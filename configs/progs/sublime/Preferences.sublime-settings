@@ -16,13 +16,25 @@
 		"*.zip",
 		"/home/phen/git-projects/nerd-fonts/**"
 	],
-	"color_scheme": "Packages/1337 Color Scheme/1337.tmTheme",
+	"color_inactive_tabs": true,
+	"color_scheme": "Packages/Colorsublime - Themes/cache/Colorsublime-Themes-master/themes/Darkside_light_selection.tmTheme",
 	"detect_indentation": false,
-	"font_size": 10,
+	"folder_no_icon": false,
+	"font_size": 11,
 	"ignored_packages":
 	[
+		"FileIcons",
+		"FileIcons Mono",
+		"Git",
+		"GitGutter",
+		"GitOpenChangedFiles",
+		"Markdown",
+		"sublime-boxy-theme",
+		"SublimeGit"
 	],
+	"overlay_scroll_bars": true,
+	"sidebar_no_icon": false,
 	"tab_size": 2,
-	"theme": "Material-Theme-Darker.sublime-theme",
+	"theme": "Asphalt-blue.sublime-theme",
 	"translate_tabs_to_spaces": true
 }

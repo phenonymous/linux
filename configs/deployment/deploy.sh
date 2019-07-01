@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eu
+set -enu
 
 # Retrieve information about the operating system
 while IFS= read -r LINE; do
@@ -12,19 +12,16 @@ ID=${ID1}${ID2}
 unset ID1 ID2
 
 # Determine available web transfer tool
-if type wget >&-; then
-  _WGET=`command -v wget`
-  alias GETCMD="${_WGET} -qO-"
-  unset _WGET
-elif type curl >&-; then
-  _CURL=`command -v curl`
-  alias GETCMD="${_CURL} -sSo-"
-fi
-
-if [ -z ${GETCMD:-} ]; then
-  echo "No webtool found. Install curl/wget and try again."
-  exit 1
-fi
+{ 
+  type wget >&- && _GETCMD="`command -v wget` -qO-";
+  # Prefer curl
+  type curl >&- && _GETCMD="`command -v curl` -sSo-";
+} && GETCMD() {
+  eval ${_GETCMD} ${@:-} 2> >(true)
+} || {
+  echo "No webtool found. Install curl/wget and try again.";
+  exit 1;
+}
 
 # Get available deployment scripts
 $GETCMD https://api.github.com/repos/phenonymous/linux/contents/configs/deployment | grep -Po '(?!["name": "].+(?="))' |\
@@ -47,4 +44,4 @@ if [ ${VERSION_MATCH:-} -ne 1 ]; then
   exit 1
 fi
 
-exec $SH_AVAILABLE -c 'eval $(command curl -sSo- "https://raw.githubusercontent.com/phenonymous/linux/master/configs/deployment/'$ID'/'$VERSION'/deploy.sh")'
+#exec $SH_AVAILABLE -c 'eval $(command curl -sSo- "https://raw.githubusercontent.com/phenonymous/linux/master/configs/deployment/'$ID'/'$VERSION'/deploy.sh")'
